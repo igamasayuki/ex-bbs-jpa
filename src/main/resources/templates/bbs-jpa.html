@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+    <link rel="stylesheet" th:href="@{/css/bbs.css}" />
+  </head>
+  <body>
+    <form th:action="@{/insert}" th:object="${insertArticleForm}" method="post">
+      <div th:errors="*{name}" class="error">エラー</div>
+      <label for="article_form_name">投稿者名：</label>
+      <input
+        th:unless="${insertCommentForm.articleId}"
+        type="text"
+        id="article_form_name"
+        name="name"
+        th:field="*{name}"
+      />
+      <input
+        th:if="${insertCommentForm.articleId}"
+        type="text"
+        id="article_form_name"
+        name="name"
+      />
+      <br />
+      <div th:errors="*{content}" class="error">エラー</div>
+      <label for="article_form_content">投稿内容：</label>
+      <textarea
+        th:unless="${insertCommentForm.articleId}"
+        name="content"
+        id="article_form_content"
+        cols="30"
+        rows="5"
+        th:field="*{content}"
+      ></textarea>
+      <textarea
+        th:if="${insertCommentForm.articleId}"
+        name="content"
+        id="article_form_content"
+        cols="30"
+        rows="5"
+      ></textarea>
+      <br />
+      <button>記事投稿</button>
+    </form>
+    <div th:each="article:${articles}">
+      <hr />
+      <p>
+        投稿者名：<span th:text="${article.name}">名前</span><br />
+        投稿内容：<br />
+        <span class="textarea" th:text="${article.content}">内容</span>
+      </p>
+      <form th:action="@{/delete}" method="post">
+        <input type="hidden" name="id" th:value="${article.id}" />
+        <button>記事削除</button>
+      </form>
+      <div th:each="comment:${article.commentList}">
+        <p>
+          コメント者名：<span th:text="${comment.name}">名前</span><br />
+          コメント内容：<br />
+          <span class="textarea" th:text="${comment.content}">内容</span>
+        </p>
+      </div>
+      <br />
+      <form
+        th:action="@{/comment}"
+        th:object="${insertCommentForm}"
+        method="post"
+      >
+        <input type="hidden" name="articleId" th:value="${article.id}" />
+        <div
+          th:if="*{articleId} == ${article.id}"
+          th:errors="*{name}"
+          class="error"
+        >
+          エラー
+        </div>
+        <label th:for="'name'+${article.id}">名前：</label><br />
+        <span></span>
+        <input
+          th:if="*{articleId} == ${article.id}"
+          type="text"
+          name="name"
+          th:id="'name'+${article.id}"
+          th:field="*{name}"
+        />
+        <input
+          th:unless="*{articleId} == ${article.id}"
+          type="text"
+          name="name"
+          th:id="'name'+${article.id}"
+        />
+        <br />
+        <div
+          th:if="*{articleId} == ${article.id}"
+          th:errors="*{content}"
+          class="error"
+        >
+          エラー
+        </div>
+        <label th:for="'content'+${article.id}">コメント：</label><br />
+        <textarea
+          th:unless="*{articleId} == ${article.id}"
+          name="content"
+          th:id="'content'+${article.id}"
+          cols="30"
+          rows="5"
+        ></textarea>
+        <textarea
+          th:if="*{articleId} == ${article.id}"
+          name="content"
+          th:id="'content'+${article.id}"
+          cols="30"
+          rows="5"
+          th:field="*{content}"
+        ></textarea
+        ><br /><br />
+        <button>コメント投稿</button>
+      </form>
+    </div>
+  </body>
+</html>
