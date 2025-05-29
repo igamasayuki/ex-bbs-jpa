@@ -19,6 +19,7 @@ import com.example.form.InsertCommentForm;
 import com.example.repository.ArticleRepository;
 
 import jakarta.transaction.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 掲示板の記事やコメントを操作するコントローラー.
@@ -32,7 +33,7 @@ import jakarta.transaction.Transactional;
 public class ArticleController {
 	@Autowired
 	private ArticleRepository articleRepository;
-
+	
 	/**
 	 * 掲示板画面を表示します.
 	 * 

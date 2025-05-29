@@ -19,5 +19,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 	 * 
 	 * @return 記事一覧(IDの降順)
 	 */
-	public List<Article> findAllByOrderByIdDesc();
+	List<Article> findAllByOrderByIdDesc();
+
 }

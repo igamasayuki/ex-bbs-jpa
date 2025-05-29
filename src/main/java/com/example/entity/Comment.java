@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +30,7 @@ public class Comment {
 	/** 記事ID */
 	@ManyToOne
 	@JoinColumn(name = "article_id")
+	@JsonBackReference // WebAPIとしてJSON形式で返す際、コメント全てにArticleオブジェクトが入るためそれを防ぐ
 	private Article article;
 
 	/**
@@ -86,7 +89,7 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		return "CommentEntity [id=" + id + ", name=" + name + ", content=" + content + ", article=" + article + "]";
+		return "CommentEntity [id=" + id + ", name=" + name + ", content=" + content + "]";
 	}
 
 }

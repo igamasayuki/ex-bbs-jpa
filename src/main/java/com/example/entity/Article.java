@@ -2,6 +2,7 @@ package com.example.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,6 +33,7 @@ public class Article {
 	/** コメントのリスト */
 	@OrderBy(value = "id DESC")
 	@OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JsonManagedReference // WebAPIとしてJSON形式で返す際、コメントの中のArticleオブジェクトによる循環参照を防ぐ
 	private List<Comment> commentList;
 
 	/**
